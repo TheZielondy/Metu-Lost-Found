@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Post Details | METU Lost & Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .post-detail {
+            max-width: 800px;
+            margin: 1.5rem auto;
+            padding: 0 1rem 2rem;
+        }
+        .post-detail-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e3e6ef;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .post-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .post-detail-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .post-detail-meta {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        .chat-box {
+            background: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e3e6ef;
+            padding: 1rem;
+        }
+        .chat-messages {
+            max-height: 260px;
+            overflow-y: auto;
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .chat-message {
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+            max-width: 80%;
+        }
+        .chat-message.me {
+            align-self: flex-end;
+            background: #fee2e2;
+        }
+        .chat-message.other {
+            align-self: flex-start;
+            background: #e5e7eb;
+        }
+        .chat-meta {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+        .chat-input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .chat-input-row input {
+            flex: 1;
+            padding: 0.4rem 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #ccc;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* Map viewer (same idea as create-post pin) */
+        .map-viewer{
+            margin-top: 1rem;
+            border: 1px solid #e3e6ef;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #fff;
+        }
+        .map-viewer-header{
+            padding: 10px 12px;
+            border-bottom: 1px solid #e3e6ef;
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .map-viewer-header .title{font-weight:600;}
+        .map-viewer-header .hint{font-size:0.8rem;color:#6b7280;}
+        .map-viewer-canvas{position:relative;line-height:0;}
+        .map-viewer-canvas img{width:100%;height:auto;display:block;}
+        .map-viewer-pin{
+            position:absolute;
+            width:18px;
+            height:18px;
+            transform: translate(-50%, -100%);
+            border-radius:999px;
+            background:#800000;
+            border:2px solid #fff;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+            display:none;
+            pointer-events:none;
+        }
+    </style>
+</head>
+<body>
+<a href="index.html" class="back-link">&larr; Back to homepage</a>
+
+<div class="post-detail">
+    <div id="post-detail-card" class="post-detail-card">
+        <!-- Filled by JS -->
+        Loading post...
+    </div>
+
+    <div class="map-viewer" id="map-viewer">
+        <div class="map-viewer-header">
+            <div class="title">Pinned location</div>
+            <div class="hint" id="map-viewer-hint">If available, the pin will appear here</div>
+        </div>
+        <div class="map-viewer-canvas">
+            <!-- Put the campus map as: ./images/map.png (same file used in Create Post) -->
+            <img id="map-viewer-image" src="./images/map.png" alt="METU campus map" />
+            <div id="map-viewer-pin" class="map-viewer-pin" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <div class="chat-box">
+        <h2>Messages</h2>
+        <p class="muted small-text">
+            This is a mock chat stored in your browser using localStorage.
+        </p>
+        <div id="chat-messages" class="chat-messages">
+            <!-- Filled by JS -->
+        </div>
+        <form id="chat-form">
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" placeholder="Write a message..." required />
+                <button type="submit" class="btn-primary">Send</button>
+            </div>
+        </form>
+
+        <div style="margin-top:0.75rem;">
+            <button id="report-btn" class="btn-secondary" type="button">Report this post</button>
+            <div class="muted small-text" style="margin-top:0.35rem;">Use this if the post seems inappropriate or misleading.</div>
+        </div>
+    </div>
+</div>
+
+<script src="post.js"></script>
+</body>
+</html>

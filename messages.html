@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages - METU Lost &amp; Found</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<style>
+    .brand{
+    display: flex;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    }
+    .container h1{
+        margin: 10px
+    }
+</style>
+<body>
+<header class="topbar">
+    <div class="brand">
+        <img src="./images/metu_logo.png" alt="METU logo" class="brand-logo" width="25px" height="25px"/>
+        <span class="brand-name">METU Lost &amp; Found</span>
+    </div>
+
+    <nav class="nav">
+        <a class="nav-link nav-link-anchor" href="index.html">Home</a>
+    </nav>
+</header>
+
+<main class="container">
+    <span><h1>Messages</h1></span>
+
+    <div class="messages-layout">
+        <aside class="messages-list">
+            <div class="muted small-text" style="margin-bottom:0.5rem;">
+                Conversations are grouped by post.
+            </div>
+            <div id="conv-list">
+                <!-- Filled by JS -->
+            </div>
+        </aside>
+
+        <section class="messages-chat">
+            <div id="conv-header" style="margin-bottom:0.5rem;">
+                <div class="muted">Select a conversation on the left.</div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages" style="margin-top:0.5rem;">
+                <!-- Filled by JS -->
+            </div>
+
+            <form id="chat-form" style="margin-top:0.6rem;">
+                <div class="chat-input-row">
+                    <input type="text" id="chat-input" placeholder="Write a message..." required />
+                    <button type="submit" class="btn-primary">Send</button>
+                </div>
+                <div class="muted small-text" id="chat-auth-hint" style="margin-top:0.35rem; display:none;">
+                    Please log in from the Home page to send messages.
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+
+<script src="messages.js"></script>
+</body>
+</html>

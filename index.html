@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>METU Lost & Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<style>
+    .logo{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+    }
+    #create-post-form label span{
+        font-size: 1.5rem;
+    }
+    textarea{
+        resize: none;
+        width: 100%;
+    }
+
+    /* Map picker (kept lightweight to preserve your style) */
+    .map-picker{
+        margin-top: 6px;
+        border: 1px solid #e3e6ef;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: #fff;
+    }
+    .map-picker-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e3e6ef;
+    }
+    .map-picker-header .title{
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+    .map-picker-header .hint{
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+    .map-picker-canvas{
+        position: relative;
+        width: 100%;
+        line-height: 0;
+        user-select: none;
+    }
+    .map-picker-canvas img{
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: crosshair;
+    }
+    .map-pin{
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        transform: translate(-50%, -100%);
+        border-radius: 999px;
+        background: #800000;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+        display: none;
+        pointer-events: none;
+    }
+</style>
+<body>
+<header class="topbar">
+    <div class="logo">
+        <img src="./images/metu_logo.png" alt="metu_logo" height="25px" width="25px">
+        METU Lost & Found
+    </div>
+    <nav class="nav">
+        <button class="nav-link" data-target="home-section">Home</button>
+        <button class="nav-link" data-target="create-section">Create Post</button>
+        <button class="nav-link" data-target="about-section">About</button>
+        <button class="nav-link" data-target="profile-section">Profile</button>
+        <a class="nav-link nav-link-anchor" href="messages.html">Messages</a>
+            <button class="nav-link" data-target="auth-section">Login / Sign Up</button>
+    </nav>
+</header>
+
+<main class="main">
+    <!-- HOME / POSTS -->
+    <section id="home-section" class="page-section is-active">
+        <div class="section-header">
+            <h1>Latest Posts</h1>
+            <div class="filters">
+                <select id="filter-type">
+                    <option value="all">All</option>
+                    <option value="lost">Lost</option>
+                    <option value="found">Found</option>
+                </select>
+                <input type="text" id="search-input" placeholder="Search items or locations..." />
+            </div>
+        </div>
+
+        <div id="posts-container" class="posts-grid">
+            <!-- Filled by JS -->
+        </div>
+    </section>
+
+    <!-- CREATE POST -->
+    <section id="create-section" class="page-section">
+    <h1>Create a Lost / Found Post</h1>
+
+    <div class="wizard" id="create-wizard">
+        <div class="wizard-progress" aria-hidden="true">
+            <div class="wizard-step is-active" data-step="1">1</div>
+            <div class="wizard-step" data-step="2">2</div>
+            <div class="wizard-step" data-step="3">3</div>
+            <div class="wizard-step" data-step="4">4</div>
+        </div>
+
+        <form id="create-post-form" class="auth-form is-active">
+            <!-- Step 1 -->
+            <div class="wizard-panel is-active" data-step="1">
+                <h2 class="wizard-title">Post basics</h2>
+
+                <label>
+                    <span>Post Type</span>
+                    <select id="post-type" required>
+                        <option value="lost">Lost</option>
+                        <option value="found">Found</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Item Title</span>
+                    <input type="text" id="post-title" placeholder="Lost: Black Wallet" required />
+                </label>
+
+                <label>
+                    <span>Category</span>
+                    <select id="post-category" required>
+                        <option value="ID Card">ID Card</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Books">Books</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
+
+                <div class="wizard-nav">
+                    <button type="button" class="btn-secondary" id="wizard-prev-1" disabled>Previous</button>
+                    <button type="button" class="btn-primary" id="wizard-next-1">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="wizard-panel" data-step="2">
+                <h2 class="wizard-title">Where and when</h2>
+
+                <label>
+                    <span>Campus Area</span>
+                    <select id="post-campus" required>
+                        <option value="Library">Library</option>
+                        <option value="Dorms">Dorms</option>
+                        <option value="Cafeteria">Cafeteria</option>
+                        <option value="Mühendislik">Mühendislik</option>
+                        <option value="Sports Hall">Sports Hall</option>
+                        <option value="Shuttle">Shuttle</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Specific Location</span>
+                    <input type="text" id="post-location-detail" placeholder="EEE building 1st floor corridor" required />
+                </label>
+
+                <label>
+                    <span>Date</span>
+                    <input type="date" id="post-date" required />
+                </label>
+
+                <label>
+                    <span>Time (approx.)</span>
+                    <input type="text" id="post-time" placeholder="Morning / 14:30 etc." required />
+                </label>
+
+                <div class="wizard-nav">
+                    <button type="button" class="btn-secondary" id="wizard-prev-2">Previous</button>
+                    <button type="button" class="btn-primary" id="wizard-next-2">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="wizard-panel" data-step="3">
+                <h2 class="wizard-title">Details</h2>
+
+                <label>
+                    <span>Description</span>
+                    <textarea id="post-description" rows="4" placeholder="Explain what was lost/found..." required></textarea>
+                </label>
+
+                <label>
+                    <span>Tags (comma separated)</span>
+                    <input type="text" id="post-tags" placeholder="wallet, black, leather" />
+                </label>
+
+                <label>
+                    <span>Photo</span>
+                    <input type="file" id="post-image" accept="image/*" />
+                    <span class="muted small-text">Supported: JPG/PNG/WebP. Stored locally in your browser.</span>
+                </label>
+
+                <div class="wizard-nav">
+                    <button type="button" class="btn-secondary" id="wizard-prev-3">Previous</button>
+                    <button type="button" class="btn-primary" id="wizard-next-3">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="wizard-panel" data-step="4">
+                <h2 class="wizard-title">Pin on map</h2>
+
+                <!-- Selectable map: users drop a flag on map.png -->
+                <label>
+                    <span>Pin on Map</span>
+                    <div class="map-picker" id="map-picker">
+                        <div class="map-picker-header">
+                            <div class="title">Select location on map</div>
+                            <div class="hint">Click to drop a pin</div>
+                        </div>
+                        <div class="map-picker-canvas" id="map-canvas">
+                            <img id="map-image" src="./images/map.png" alt="METU campus map" />
+                            <div id="map-pin" class="map-pin" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                    <span class="muted small-text">
+                        Tip: Click again to move the pin.
+                    </span>
+                </label>
+
+                <!-- Hidden fields for storing map coordinates (0..1) -->
+                <input type="hidden" id="post-map-x" value="" />
+                <input type="hidden" id="post-map-y" value="" />
+
+                <div class="wizard-nav">
+                    <button type="button" class="btn-secondary" id="wizard-prev-4">Previous</button>
+                    <button type="submit" class="btn-primary" id="wizard-submit">Create Post</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+    <!-- ABOUT -->
+    <section id="about-section" class="page-section">
+        <h1>About This Project</h1>
+        <p>
+            METU Lost &amp; Found is a web application designed to help students
+            find their lost belongings or return items they have found on campus.
+        </p>
+        <br>
+        <p>
+            Students or authorities can create posts, browse lost/found items, and send messages to coordinate returning items.
+        </p>
+        <br>
+        <p>Disclaimer: This is a CEIT323 project.</p>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile-section" class="page-section">
+        <h1>My Profile</h1>
+
+        <div class="profile-card">
+            <div class="profile-avatar">
+                <span id="profile-initials">GU</span>
+            </div>
+            <div class="profile-info">
+                <h2 id="profile-name">Guest User</h2>
+                <p id="profile-email">Not logged in</p>
+                <p id="profile-department">Department: -</p>
+                <button id="profile-edit-btn" class="btn-secondary" disabled>
+                    Edit Profile (login required)
+                </button>
+            </div>
+        </div>
+
+        <h2 class="subheading">My Posts</h2>
+        <div id="my-posts-container" class="posts-grid empty-state">
+            <p class="muted">Login and create posts to see them here.</p>
+        </div>
+    </section>
+
+    <!-- AUTH -->
+    <section id="auth-section" class="page-section auth-section">
+        <div class="auth-toggle">
+            <button id="login-tab" class="tab-button is-active">Login</button>
+            <button id="signup-tab" class="tab-button">Sign Up</button>
+        </div>
+
+        <form id="login-form" class="auth-form is-active">
+            <h1>Login</h1>
+            <label>
+                E-mail
+                <input type="email" id="login-email" placeholder="name@metu.edu.tr" required />
+            </label>
+            <label>
+                Password
+                <input type="password" id="login-password" required />
+            </label>
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+
+        <form id="signup-form" class="auth-form">
+            <h1>Sign Up</h1>
+            <label>
+                Full Name
+                <input type="text" id="signup-name" required />
+            </label>
+            <label>
+                METU E-mail
+                <input type="email" id="signup-email" placeholder="name@metu.edu.tr" required />
+            </label>
+            <label>
+                Department (optional)
+                <input type="text" id="signup-department" placeholder="CEIT, EEE, CENG..." />
+            </label>
+            <label>
+                Password
+                <input type="password" id="signup-password" required />
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" id="signup-agree" required />
+                <span>I agree to use this system responsibly.</span>
+            </label>
+            <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 METU Lost &amp; Found </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
