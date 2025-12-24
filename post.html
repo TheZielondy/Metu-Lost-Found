@@ -82,7 +82,7 @@
             font-size: 0.85rem;
         }
 
-        /* Map viewer (same idea as create-post pin) */
+        /* Map viewer */
         .map-viewer{
             margin-top: 1rem;
             border: 1px solid #e3e6ef;
@@ -120,7 +120,6 @@
 
 <div class="post-detail">
     <div id="post-detail-card" class="post-detail-card">
-        <!-- Filled by JS -->
         Loading post...
     </div>
 
@@ -130,7 +129,6 @@
             <div class="hint" id="map-viewer-hint">If available, the pin will appear here</div>
         </div>
         <div class="map-viewer-canvas">
-            <!-- Put the campus map as: ./images/map.png (same file used in Create Post) -->
             <img id="map-viewer-image" src="./images/map.png" alt="METU campus map" />
             <div id="map-viewer-pin" class="map-viewer-pin" aria-hidden="true"></div>
         </div>
@@ -142,7 +140,6 @@
             This is a mock chat stored in your browser using localStorage.
         </p>
         <div id="chat-messages" class="chat-messages">
-            <!-- Filled by JS -->
         </div>
         <form id="chat-form">
             <div class="chat-input-row">
