@@ -1,4 +1,3 @@
-/* Layout reset-ish */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -49,15 +48,13 @@ body {
     background: rgba(255, 255, 255, 0.15);
 }
 
-/* Main layout */
-
 .main {
     max-width: 960px;
     margin: 1.5rem auto;
     padding: 0 1rem 2rem;
 }
 
-/* Sections (simple SPA) */
+/* Sections */
 
 .page-section {
     display: none;
@@ -110,7 +107,7 @@ body {
     padding: 2rem 0;
 }
 
-/* Post card (post item component) */
+/* Post card */
 
 .post-card {
     background: #fff;
@@ -384,8 +381,7 @@ body {
     color: #6b7280;
 }
 
-
-/* --- Enhancements: thumbnails, wizard, messages --- */
+/* post wizard */
 
 .post-thumb {
     width: 100%;
