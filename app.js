@@ -4,14 +4,12 @@ const USER_KEY = "metu_lostfound_currentUser";
 
 let currentUser = null;
 
-// ---- Helpers: email restriction (front-end only) ----
 function isMetuEmail(email) {
     if (!email) return false;
     return String(email).trim().toLowerCase().endsWith("@metu.edu.tr");
 }
 
-// ---- Sample seed data (only used first time) ----
-// NOTE: Pins are randomized on first run so example posts don't overlap.
+// NOTE: Pins are randomized on first run.
 const seedPosts = [
     {
         id: 1,
@@ -57,7 +55,6 @@ const seedPosts = [
 function loadPosts() {
     const raw = localStorage.getItem(POSTS_KEY);
     if (!raw) {
-        // Randomize example pins (keep away from edges)
         const seeded = seedPosts.map(p => {
             const rx = 0.15 + Math.random() * 0.70;
             const ry = 0.15 + Math.random() * 0.70;
@@ -96,7 +93,7 @@ function saveCurrentUser(user) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
-// ---- Create post card (with link to post.html?id=...) ----
+// ---- Create post card ----
 function createPostCard(post) {
     const card = document.createElement("article");
     card.className = "post-card";
@@ -149,7 +146,7 @@ function createPostCard(post) {
     return card;
 }
 
-// ---- Map picker on Create Post (stores normalized 0..1 coordinates) ----
+// ---- Map picker on Create Post
 function setupMapPicker() {
     const mapImg = document.getElementById("map-image");
     const pin = document.getElementById("map-pin");
@@ -158,11 +155,9 @@ function setupMapPicker() {
     if (!mapImg || !pin || !inputX || !inputY) return;
 
     function placePin(normX, normY) {
-        // store
         inputX.value = String(normX);
         inputY.value = String(normY);
 
-        // render
         const rect = mapImg.getBoundingClientRect();
         pin.style.left = `${normX * rect.width}px`;
         pin.style.top = `${normY * rect.height}px`;
@@ -178,7 +173,7 @@ function setupMapPicker() {
         placePin(normX, normY);
     });
 
-    // keep the pin positioned correctly on resize
+    // resize pin
     window.addEventListener("resize", () => {
         const normX = Number(inputX.value);
         const normY = Number(inputY.value);
@@ -188,7 +183,6 @@ function setupMapPicker() {
     });
 }
 
-// ---- Render homepage posts ----
 function renderPosts() {
     const container = document.getElementById("posts-container");
     if (!container) return;
@@ -244,7 +238,7 @@ function renderMyPosts() {
     mine.forEach(p => container.appendChild(createPostCard(p)));
 }
 
-// ---- SPA navigation ----
+// ---- SPA ----
 function setupNavigation() {
     const navButtons = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll(".page-section");
@@ -256,14 +250,13 @@ function setupNavigation() {
                 sec.classList.toggle("is-active", sec.id === targetId);
             });
 
-            // Small UX: re-render if we enter home or profile
             if (targetId === "home-section") renderPosts();
             if (targetId === "profile-section") renderMyPosts();
         });
     });
 }
 
-// ---- Auth tabs ----
+// ---- Auth ----
 function setupAuthTabs() {
     const loginTab = document.getElementById("login-tab");
     const signupTab = document.getElementById("signup-tab");
@@ -285,7 +278,7 @@ function setupAuthTabs() {
     });
 }
 
-// ---- Auth forms  ----
+// ---- Auth  ----
 function setupAuthForms() {
     const loginForm = document.getElementById("login-form");
     const signupForm = document.getElementById("signup-form");
@@ -312,7 +305,6 @@ function setupAuthForms() {
             return;
         }
 
-        // For : just log in as this user
         currentUser = {
             name: email.split("@")[0] || "User",
             email,
@@ -369,7 +361,7 @@ function updateProfileUI() {
     const initialsEl = document.getElementById("profile-initials");
     const editBtn = document.getElementById("profile-edit-btn");
 
-    if (!nameEl) return; // not on this page (safety)
+    if (!nameEl) return; 
 
     if (!currentUser) {
         nameEl.textContent = "Guest User";
@@ -404,7 +396,6 @@ function setupCreatePostForm() {
     const form = document.getElementById("create-post-form");
     if (!form) return;
 
-    // Wizard panels
     const panels = Array.from(document.querySelectorAll(".wizard-panel"));
     const steps = Array.from(document.querySelectorAll(".wizard-step"));
 
