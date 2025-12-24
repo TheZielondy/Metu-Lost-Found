@@ -85,7 +85,7 @@ function saveMessages(postId, msgs) {
     localStorage.setItem(MSG_PREFIX + postId, JSON.stringify(msgs));
 }
 
-// ---- Map viewer (read-only) ----
+// ---- Map viewer ----
 function renderMapViewer(post) {
     const mapImg = document.getElementById("map-viewer-image");
     const pin = document.getElementById("map-viewer-pin");
